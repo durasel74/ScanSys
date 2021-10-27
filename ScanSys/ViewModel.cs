@@ -1,26 +1,32 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Management;
 
 namespace ScanSys
 {
 	public class ViewModel : INotifyPropertyChanged
 	{
 		private string testText;
-		private Weather weather;
-		private WeatherLoader loader;
+		private WeatherInfoLoader weatherLoader;
+		private CPUInfoLoader CPULoader;
+		private WeatherInfo weather;
+		private CPUInfo CPUInfo;
 
 		public ViewModel()
 		{
-			loader = new WeatherLoader("1508290");
-			loader.LoadEventHandler += UpdateWeather;
-			loader.LoadAsync();
+			weatherLoader = new WeatherInfoLoader("1508290");
+			weatherLoader.LoadEventHandler += UpdateWeather;
+			weatherLoader.LoadAsync();
+			CPULoader = new CPUInfoLoader();
+			CPUInfo = CPULoader.GetInfo();
 		}
 
 		public void UpdateWeather()
 		{
-			weather = loader.GetResult();
+			weather = weatherLoader.GetResult();
 			TestText = weather.ToString();
+			TestText += CPUInfo.ToString();
 		}
 
 		public string TestText

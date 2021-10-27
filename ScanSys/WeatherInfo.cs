@@ -1,34 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 
 namespace ScanSys
 {
 	/// <summary>
 	/// Предоставляет данные о погоде.
 	/// </summary>
-	public class Weather
+	public class WeatherInfo
 	{
-		private double temp;
+		private double temperature;
 		private double humidity;
 		private double pressure;
 
-		public Weather(double temp, double humidity, double pressure)
+		public WeatherInfo(double temperature, double humidity, double pressure)
 		{
-			this.temp = temp;
+			this.temperature = temperature;
 			this.humidity = humidity;
 			this.pressure = pressure;
 		}
 
-		public double TempKelvin => temp;
-		public double TempCelsius => temp - 273d;
+		public double TemperatureKelvin => temperature;
+		public double TemperatureCelsius => temperature - 273d;
 		public double Humidity => humidity;
 		public double Pressure => pressure;
 
 		public override string ToString()
 		{
-			return $"temp: {TempCelsius}\nhumidity: {humidity}\npressure: {pressure}\n";
+			return $"temp: {TemperatureCelsius}\nhumidity: {humidity}\npressure: {pressure}\n";
 		}
 	}
 }

@@ -9,14 +9,14 @@ namespace ScanSys
 	/// <summary>
 	/// Управляет загрузкой данных о пагоде.
 	/// </summary>
-	public class WeatherLoader
+	public class WeatherInfoLoader
 	{
 		private string cityId;
 		private string requestAdres;
-		private Weather weather;
+		private WeatherInfo weatherInfo;
 		private bool loadResult;
 
-		public WeatherLoader(string cityId)
+		public WeatherInfoLoader(string cityId)
 		{
 			this.cityId = cityId;
 			requestAdres = $"http://api.openweathermap.org/data/2.5/" +
@@ -37,13 +37,13 @@ namespace ScanSys
 		public async Task<bool> LoadAsync()
 		{
 			string json;
-			Weather loadedWeather;
+			WeatherInfo loadedWeather;
 			loadResult = false;
 			try
 			{
 				json = await RequestJsonAsync();
-				loadedWeather = BuildWeather(json);
-				weather = loadedWeather;
+				loadedWeather = BuildInfo(json);
+				weatherInfo = loadedWeather;
 				loadResult = true;
 				LoadEventHandler?.Invoke();
 				return true;
@@ -53,15 +53,15 @@ namespace ScanSys
 		}
 
 		/// <summary>
-		/// Возвращает экземпляр погоды (Возможно только после запуска Load()).
+		/// Возвращает экземпляр информации о погоде (Возможно только после 
+		/// запуска Load()).
 		/// </summary>
 		/// <returns>Экземпляр погоды.</returns>
-		public Weather GetResult()
+		public WeatherInfo GetResult()
 		{
-			if (loadResult) return this.weather;
-			else throw new ApplicationException("Не удалось загрузить информацию о пагоде");
+			if (loadResult) return this.weatherInfo;
+			else throw new ApplicationException("Не удалось загрузить информацию о погоде");
 		}
-
 
 		/// <summary>
 		/// Загружает JSON файл погоды через сеть.
@@ -90,7 +90,7 @@ namespace ScanSys
 		/// </summary>
 		/// <param name="Json">JSON строка.</param>
 		/// <returns>Экземпляр данных о погоде.</returns>
-		public Weather BuildWeather(string Json)
+		public WeatherInfo BuildInfo(string Json)
 		{
 			using JsonDocument doc = JsonDocument.Parse(Json);
 			JsonElement main = doc.RootElement.GetProperty("main");
@@ -99,7 +99,7 @@ namespace ScanSys
 			var humidity = main.GetProperty("humidity").GetDouble();
 			var pressure = main.GetProperty("pressure").GetDouble();
 
-			Weather weather = new Weather(temp, humidity, pressure);
+			WeatherInfo weather = new WeatherInfo(temp, humidity, pressure);
 			return weather;
 		}
 	}
