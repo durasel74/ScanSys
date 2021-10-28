@@ -4,18 +4,30 @@ using System.Management;
 namespace ScanSys
 {
 	/// <summary>
-	/// Управляет загрузкой данных о процессоре.
+	/// Собирает информацию о центральном процессоре.
 	/// </summary>
-	public class CPUInfoLoader
+	public class CPUCollector : IInfoCollector
 	{
+		private CollectedInfo currentInfo;
+
 		/// <summary>
-		/// Возвращает экземпляр информации о процессоре.
+		/// Возвращает информацию о температуре ЦП.
 		/// </summary>
-		/// <returns></returns>
-		public CPUInfo GetInfo()
+		/// <returns>Строки с температурой.</returns>
+		public CollectedInfo GetInfo()
 		{
 			var temperature = GetTemperature();
-			return new CPUInfo(temperature);
+			if (double.IsNaN(temperature))
+			{
+				currentInfo.Info = "Нет данных";
+				currentInfo.FormatedInfo = "Нет данных";
+			}
+			else
+			{
+				currentInfo.Info = temperature.ToString();
+				currentInfo.FormatedInfo = $"{temperature}℃";
+			}
+			return currentInfo;
 		}
 
 		/// <summary>

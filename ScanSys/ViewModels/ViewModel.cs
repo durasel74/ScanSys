@@ -1,32 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Management;
 
 namespace ScanSys
 {
 	public class ViewModel : INotifyPropertyChanged
 	{
 		private string testText;
-		private WeatherInfoLoader weatherLoader;
-		private CPUInfoLoader CPULoader;
-		private WeatherInfo weather;
-		private CPUInfo CPUInfo;
+		private List<IInfoCollector> collectors;
 
 		public ViewModel()
 		{
-			weatherLoader = new WeatherInfoLoader("1508290");
-			weatherLoader.LoadEventHandler += UpdateWeather;
-			weatherLoader.LoadAsync();
-			CPULoader = new CPUInfoLoader();
-			CPUInfo = CPULoader.GetInfo();
+			collectors = new List<IInfoCollector>()
+			{
+				new WeatherCollector("1508290"), // "1508290" = Челябинск
+				new CPUCollector(),
+				new AudioCollector(),
+			};
+			UpdateInfo();
 		}
 
-		public void UpdateWeather()
+		public void UpdateInfo()
 		{
-			weather = weatherLoader.GetResult();
-			TestText = weather.ToString();
-			TestText += CPUInfo.ToString();
+			foreach (var collector in collectors)
+				TestText += collector.GetInfo().FormatedInfo + "\n";
 		}
 
 		public string TestText
