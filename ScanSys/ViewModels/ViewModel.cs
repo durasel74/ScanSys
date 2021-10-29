@@ -8,23 +8,27 @@ namespace ScanSys
 	public class ViewModel : INotifyPropertyChanged
 	{
 		private string testText;
-		private List<IInfoCollector> collectors;
+
+		WeatherCollector weatherCollector;
+		CPUCollector cpuCollector;
+		AudioCollector audioCollector;
+		DevicesCollector devicesCollector;
 
 		public ViewModel()
 		{
-			collectors = new List<IInfoCollector>()
-			{
-				new WeatherCollector("1508290"), // "1508290" = Челябинск
-				new CPUCollector(),
-				new AudioCollector(),
-			};
+			weatherCollector = new WeatherCollector("1508290"); // "1508290" = Челябинск
+			cpuCollector = new CPUCollector();
+			audioCollector = new AudioCollector();
+			devicesCollector = new DevicesCollector();
 			UpdateInfo();
 		}
 
 		public void UpdateInfo()
 		{
-			foreach (var collector in collectors)
-				TestText += collector.GetInfo().FormatedInfo + "\n";
+			TestText += weatherCollector.GetInfo();
+			TestText += cpuCollector.GetTemperature();
+			TestText += audioCollector.GetInfo();
+			TestText += devicesCollector.GetInfo();
 		}
 
 		public string TestText

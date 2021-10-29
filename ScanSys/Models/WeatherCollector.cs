@@ -10,9 +10,9 @@ namespace ScanSys
 	/// <summary>
 	/// Собирает информацию о погоде.
 	/// </summary>
-	public class WeatherCollector : IInfoCollector
+	public class WeatherCollector : IDisposable
 	{
-		private CollectedInfo currentInfo;
+		private WeatherInfo weatherInfo;
 		private string requestAdres;
 		private Timer timer;
 
@@ -20,7 +20,7 @@ namespace ScanSys
 		{
 			requestAdres = $"http://api.openweathermap.org/data/2.5/" +
 				$"weather?id={cityId}&appid=f8a1d7712cac470533b69df495a5027a";
-			TimerCallback tm = new TimerCallback(LoadWeather);
+			TimerCallback tm = new TimerCallback(LoadWeatherInfo);
 			timer = new Timer(tm, null, 0, 300_000); // 300 000 мс = 5 мин
 		}
 		~WeatherCollector() => Dispose();
@@ -29,10 +29,10 @@ namespace ScanSys
 		/// <summary>
 		/// Возвращает информацию о погоде.
 		/// </summary>
-		/// <returns>Строки с информацией о погоде.</returns>
-		public CollectedInfo GetInfo()
+		/// <returns>Структура с информацией о погоде.</returns>
+		public WeatherInfo GetInfo()
 		{
-			return currentInfo;
+			return weatherInfo;
 		}
 
 		// <summary>
@@ -61,8 +61,8 @@ namespace ScanSys
 		/// Собирает информацию о погоде из JSON строки.
 		/// </summary>
 		/// <param name="Json">JSON строка</param>
-		/// <returns>Строки с информацией о погоде.</returns>
-		public CollectedInfo BuildInfo(string Json)
+		/// <returns>Структура с информацией о погоде.</returns>
+		public WeatherInfo BuildInfo(string Json)
 		{
 			using JsonDocument doc = JsonDocument.Parse(Json);
 			JsonElement main = doc.RootElement.GetProperty("main");
@@ -71,33 +71,23 @@ namespace ScanSys
 			var humidity = main.GetProperty("humidity").GetDouble();
 			var pressure = main.GetProperty("pressure").GetDouble();
 
-			var result = new CollectedInfo();
-			result.Info = $"{temp} {humidity} {pressure}";
-			result.FormatedInfo =
-				$"Температура воздуха: {temp}\n" +
-				$"Влажность воздуха: {humidity}\n" +
-				$"Давление воздуха: {pressure}";
+			var result = new WeatherInfo();
+			result.TemperatureKelvin = temp;
+			result.Humidity = humidity;
+			result.Pressure = pressure;
 			return result;
 		}
 
-		private void LoadWeather(object obj)
+		private void LoadWeatherInfo(object obj)
 		{
 			try
 			{
 				var json = RequestJsonAsync().Result;
 				var result = BuildInfo(json);
-				currentInfo = result;
+				weatherInfo = result;
 			}
-			catch (WebException)
-			{
-				currentInfo.Info = "Ошибка подключения к сети.";
-				currentInfo.FormatedInfo = "Ошибка подключения к сети.";
-			}
-			catch (JsonException)
-			{
-				currentInfo.Info = "Ошибка обработки JSON файла.";
-				currentInfo.FormatedInfo = "Ошибка обработки JSON файла.";
-			}
+			catch (WebException) { weatherInfo.IsErrorConnection = true; }
+			catch (JsonException) { weatherInfo.IsErrorConnection = true; }
 		}
 	}
 }

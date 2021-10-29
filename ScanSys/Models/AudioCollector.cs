@@ -6,9 +6,9 @@ namespace ScanSys
 	/// <summary>
 	/// Собирает информацию по аудио части системы.
 	/// </summary>
-	public class AudioCollector : IInfoCollector
+	public class AudioCollector : IDisposable
 	{
-		private CollectedInfo currentInfo;
+		private double levelInfo;
 		private WaveInEvent waveIn;
 
 		public AudioCollector()
@@ -24,10 +24,10 @@ namespace ScanSys
 		/// <summary>
 		/// Возвращает информацию об уровне сигнала микрофона.
 		/// </summary>
-		/// <returns>Строки с уровнем сигнала.</returns>
-		public CollectedInfo GetInfo()
+		/// <returns>Значение уровня сигнала.</returns>
+		public double GetInfo()
 		{
-			return currentInfo;
+			return levelInfo;
 		}
 
 		private void WaveOnDataAvailable(object sender, WaveInEventArgs e)
@@ -40,11 +40,7 @@ namespace ScanSys
 				sample = (short)((e.Buffer[index + 1] << 8) | e.Buffer[index + 0]);
 				amplitude = sample / 32768f;
 				level = Math.Abs(amplitude) * 100;
-				currentInfo = new CollectedInfo()
-				{
-					Info = level.ToString(),
-					FormatedInfo = level.ToString()
-				};
+				levelInfo = level;
 			}
 		}
 	}

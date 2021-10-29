@@ -6,30 +6,8 @@ namespace ScanSys
 	/// <summary>
 	/// Собирает информацию о центральном процессоре.
 	/// </summary>
-	public class CPUCollector : IInfoCollector
+	public class CPUCollector
 	{
-		private CollectedInfo currentInfo;
-
-		/// <summary>
-		/// Возвращает информацию о температуре ЦП.
-		/// </summary>
-		/// <returns>Строки с температурой.</returns>
-		public CollectedInfo GetInfo()
-		{
-			var temperature = GetTemperature();
-			if (double.IsNaN(temperature))
-			{
-				currentInfo.Info = "Нет данных";
-				currentInfo.FormatedInfo = "Нет данных";
-			}
-			else
-			{
-				currentInfo.Info = temperature.ToString();
-				currentInfo.FormatedInfo = $"{temperature}℃";
-			}
-			return currentInfo;
-		}
-
 		/// <summary>
 		/// Возвращает текущую температуру процессора.
 		/// </summary>
