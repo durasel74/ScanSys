@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ScanSys
+namespace ScanSysLib
 {
 	public struct DevicesInfo
 	{

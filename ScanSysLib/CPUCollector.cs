@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Management;
 
-namespace ScanSys
+namespace ScanSysLib
 {
 	/// <summary>
 	/// Собирает информацию о центральном процессоре.

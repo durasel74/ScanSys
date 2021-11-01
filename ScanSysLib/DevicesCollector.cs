@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Management;
 
-namespace ScanSys
+namespace ScanSysLib
 {
 	/// <summary>
 	/// Собирает информацию о подключенных устройствах компьютера.
@@ -17,7 +17,7 @@ namespace ScanSys
 		{
 			devicesInfo = new DevicesInfo();
 			TimerCallback tm = new TimerCallback(LoadDevicesInfo);
-			timer = new Timer(tm, null, 0, 1_000);
+			timer = new Timer(tm, null, 0, 2_000);
 		}
 		~DevicesCollector() => Dispose();
 		public void Dispose() => timer.Dispose();

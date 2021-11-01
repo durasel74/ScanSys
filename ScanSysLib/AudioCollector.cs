@@ -1,7 +1,7 @@
 ﻿using System;
 using NAudio.Wave;
 
-namespace ScanSys
+namespace ScanSysLib
 {
 	/// <summary>
 	/// Собирает информацию по аудио части системы.

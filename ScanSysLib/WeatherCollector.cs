@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Text.Json;
 
-namespace ScanSys
+namespace ScanSysLib
 {
 	/// <summary>
 	/// Собирает информацию о погоде.

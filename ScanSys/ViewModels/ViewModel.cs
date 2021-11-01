@@ -1,34 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ScanSysLib;
 
 namespace ScanSys
 {
 	public class ViewModel : INotifyPropertyChanged
 	{
+		private Timer timer;
 		private string testText;
-
-		WeatherCollector weatherCollector;
-		CPUCollector cpuCollector;
-		AudioCollector audioCollector;
-		DevicesCollector devicesCollector;
+		ScanSysLib.SystemInfoCollector systemInfoCollector;
 
 		public ViewModel()
 		{
-			weatherCollector = new WeatherCollector("1508290"); // "1508290" = Челябинск
-			cpuCollector = new CPUCollector();
-			audioCollector = new AudioCollector();
-			devicesCollector = new DevicesCollector();
-			UpdateInfo();
+			systemInfoCollector = new ScanSysLib.SystemInfoCollector();
+			TimerCallback tm = new TimerCallback(UpdateInfo);
+			timer = new Timer(tm, null, 0, 200);
 		}
+		~ViewModel() => Dispose();
+		public void Dispose() => timer.Dispose();
 
-		public void UpdateInfo()
+		public void UpdateInfo(object obj)
 		{
-			TestText += weatherCollector.GetInfo();
-			TestText += cpuCollector.GetTemperature();
-			TestText += audioCollector.GetInfo();
-			TestText += devicesCollector.GetInfo();
+			TestText = "";
+			ScanSysLib.SystemInfo info = systemInfoCollector.GetInfo();
+			WeatherInfo weatherInfo = info.WeatherInfo;
+			DevicesInfo devicesInfo = info.DevicesInfo;
+
+			TestText += weatherInfo.TemperatureCelsius + "\n";
+			TestText += weatherInfo.Humidity + "\n";
+			TestText += weatherInfo.Pressure + "\n";
+			TestText += info.CPUInfo + "\n";
+			TestText += info.AudioInfo + "\n";
+			TestText += devicesInfo.MonitorsInfo + "\n";
+			TestText += devicesInfo.SoundCardsInfo + "\n";
+			TestText += devicesInfo.PnPInfo + "\n";
 		}
 
 		public string TestText

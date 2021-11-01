@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScanSys
+namespace ScanSysLib
 {
 	public struct WeatherInfo
 	{
