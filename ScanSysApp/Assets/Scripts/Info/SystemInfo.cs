@@ -1,7 +1,10 @@
-﻿public struct SystemInfo
+﻿using System;
+
+[Serializable]
+public struct SystemInfo
 {
-	public WeatherInfo WeatherInfo { get; set; }
-	public CPUInfo CPUInfo { get; set; }
-	public double AudioInfo { get; set; }
-	public DevicesInfo DevicesInfo { get; set; }
+	public WeatherInfo WeatherInfo;
+	public CPUInfo CPUInfo;
+	public double AudioInfo;
+	public DevicesInfo DevicesInfo;
 }

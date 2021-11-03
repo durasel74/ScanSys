@@ -1,18 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
-using ScanSysLib;
 
 namespace ScanSys
 {
     /// <summary>
     /// Сервер для отправки информации о системе клиенту.
     /// </summary>
-	public class InfoServer : INotifyPropertyChanged
+	public class InfoServer
     {
         private const string requestCommand = "system_info";
         private const int PORT = 8888;
@@ -90,13 +87,6 @@ namespace ScanSys
 		{
             Byte[] responseData = Encoding.UTF8.GetBytes(infoUpdater.JsonInfo);
             stream.Write(responseData, 0, responseData.Length);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

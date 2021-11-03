@@ -1,8 +1,11 @@
-﻿public class PnPInfo
+﻿using System;
+
+[Serializable]
+public class PnPInfo
 {
-	public string Description { get; set; }
-	public string Manufacturer { get; set; }
-	public string PnPClass { get; set; }
-	public string Status { get; set; }
-	public string SystemName { get; set; }
+	public string Description;
+	public string Manufacturer;
+	public string PnPClass;
+	public string Status;
+	public string SystemName;
 }

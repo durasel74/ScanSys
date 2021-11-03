@@ -1,5 +1,8 @@
-﻿public struct CPUInfo
+﻿using System;
+
+[Serializable]
+public struct CPUInfo
 {
-	public bool IsError { get; set; }
-	public double Temperature { get; set; }
+	public bool IsError;
+	public double Temperature;
 }

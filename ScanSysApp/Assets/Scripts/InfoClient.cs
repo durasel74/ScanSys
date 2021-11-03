@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Net;
 using System.Net.Sockets;
 
 public class InfoClient

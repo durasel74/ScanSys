@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public struct DevicesInfo
 {
-	public List<MonitorInfo> MonitorsInfo { get; set; }
-	public List<SoundCardInfo> SoundCardsInfo { get; set; }
-	public List<PnPInfo> PnPInfo { get; set; }
+	public List<MonitorInfo> MonitorsInfo;
+	public List<SoundCardInfo> SoundCardsInfo;
+	public List<PnPInfo> PnPInfo;
 }

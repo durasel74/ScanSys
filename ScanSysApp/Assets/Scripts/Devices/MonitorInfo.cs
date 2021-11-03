@@ -1,9 +1,12 @@
-﻿public class MonitorInfo
+﻿using System;
+
+[Serializable]
+public class MonitorInfo
 {
-	public string Description { get; set; }
-	public string Manufacturer { get; set; }
-	public string ScreenWidth { get; set; }
-	public string ScreenHeight { get; set; }
-	public string Status { get; set; }
-	public string SystemName { get; set; }
+	public string Description;
+	public string Manufacturer;
+	public string ScreenWidth;
+	public string ScreenHeight;
+	public string Status;
+	public string SystemName;
 }

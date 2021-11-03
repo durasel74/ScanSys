@@ -1,8 +1,11 @@
-﻿public struct WeatherInfo
+﻿using System;
+
+[Serializable]
+public struct WeatherInfo
 {
-	public bool IsErrorConnection { get; set; }
-	public double TemperatureKelvin { get; set; }
-	public double TemperatureCelsius => TemperatureKelvin - 273d;
-	public double Humidity { get; set; }
-	public double Pressure { get; set; }
+	public bool IsErrorConnection;
+	public double TemperatureKelvin;
+	public double TemperatureCelsius;
+	public double Humidity;
+	public double Pressure;
 }

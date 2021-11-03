@@ -6,16 +6,27 @@ namespace ScanSys
 {
 	public class ViewModel : INotifyPropertyChanged
 	{
+		private InfoUpdater infoUpdater;
 		private InfoServer infoServer;
+		private string serverInfo;
 
 		public ViewModel()
 		{
-			InfoUpdater = new InfoUpdater();
-			infoServer = new InfoServer(InfoUpdater);
+			infoUpdater = new InfoUpdater();
+			infoServer = new InfoServer(infoUpdater);
 			infoServer.Start();
+			ServerInfo += "Сервер запущен";
 		}
 
-		public InfoUpdater InfoUpdater { get; set; }
+		public string ServerInfo
+		{
+			get { return serverInfo; }
+			set
+			{
+				serverInfo = value;
+				OnPropertyChanged("ServerInfo");
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		public void OnPropertyChanged([CallerMemberName] string prop = "")
