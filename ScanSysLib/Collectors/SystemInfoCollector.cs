@@ -2,6 +2,9 @@
 
 namespace ScanSysLib
 {
+	/// <summary>
+	/// Собирает информацию о системе.
+	/// </summary>
 	public class SystemInfoCollector
 	{
 		WeatherCollector weatherCollector;
@@ -18,10 +21,14 @@ namespace ScanSysLib
 			devicesCollector = new DevicesCollector();
 		}
 
+		/// <summary>
+		/// Возвращает информацию о погоде.
+		/// </summary>
+		/// <returns>Структура с информацией о погоде.</returns>
 		public SystemInfo GetInfo()
 		{
 			systemInfo.WeatherInfo = weatherCollector.GetInfo();
-			systemInfo.CPUInfo = cpuCollector.GetTemperature();
+			systemInfo.CPUInfo = cpuCollector.GetInfo();
 			systemInfo.AudioInfo = audioCollector.GetInfo();
 			systemInfo.DevicesInfo = devicesCollector.GetInfo();
 			return systemInfo;

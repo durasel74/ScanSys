@@ -9,6 +9,27 @@ namespace ScanSysLib
 	public class CPUCollector
 	{
 		/// <summary>
+		/// Возвращает информацию о температуре процессора.
+		/// </summary>
+		/// <returns>Структура с информацией о температуре ЦП.</returns>
+		public CPUInfo GetInfo()
+		{
+			CPUInfo info = new CPUInfo();
+			double temp = GetTemperature();
+			if (double.IsNaN(temp))
+			{
+				info.IsError = true;
+				info.Temperature = 0;
+			}
+			else
+			{
+				info.IsError = false;
+				info.Temperature = temp;
+			}
+			return info;
+		}
+
+		/// <summary>
 		/// Возвращает текущую температуру процессора.
 		/// </summary>
 		/// <returns>Значение температуры в формате double или NaN, 

@@ -54,6 +54,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\InfoClient.cs" />
+    <Compile Include="Assets\Scripts\Controller.cs" />
+    <Compile Include="Assets\Scripts\Devices\PnPInfo.cs" />
+    <Compile Include="Assets\Scripts\Devices\SoundCardInfo.cs" />
+    <Compile Include="Assets\Scripts\Devices\MonitorInfo.cs" />
+    <Compile Include="Assets\Scripts\Info\DevicesInfo.cs" />
+    <Compile Include="Assets\Scripts\Info\WeatherInfo.cs" />
+    <Compile Include="Assets\Scripts\Info\SystemInfo.cs" />
+    <Compile Include="Assets\Scripts\Info\CPUInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

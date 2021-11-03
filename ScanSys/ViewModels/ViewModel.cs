@@ -11,8 +11,8 @@ namespace ScanSys
 		public ViewModel()
 		{
 			InfoUpdater = new InfoUpdater();
-			infoServer = new InfoServer();
-			infoServer.CreateServer();
+			infoServer = new InfoServer(InfoUpdater);
+			infoServer.Start();
 		}
 
 		public InfoUpdater InfoUpdater { get; set; }

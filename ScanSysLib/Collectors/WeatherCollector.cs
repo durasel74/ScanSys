@@ -75,6 +75,7 @@ namespace ScanSysLib
 			result.TemperatureKelvin = temp;
 			result.Humidity = humidity;
 			result.Pressure = pressure;
+			result.IsErrorConnection = false;
 			return result;
 		}
 

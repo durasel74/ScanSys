@@ -1,18 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using System.Text;
+using System.Net;
+using System.Net.Sockets;
 
-public class InfoClient : MonoBehaviour
+public class InfoClient
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private TcpClient client;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public InfoClient(string address, int port)
+	{
+        client = new TcpClient(address, port);
+	}
+
+    public string SendMessage(string message)
+	{
+        Byte[] data = Encoding.UTF8.GetBytes(message);
+        NetworkStream stream = client.GetStream();
+        try
+        {
+            stream.Write(data, 0, data.Length);
+
+            Byte[] readingData = new Byte[256];
+            String responseData = String.Empty;
+            StringBuilder completeMessage = new StringBuilder();
+            int numberOfBytesRead = 0;
+            do
+            {
+                numberOfBytesRead = stream.Read(readingData, 0, readingData.Length);
+                completeMessage.AppendFormat("{0}", Encoding.UTF8.GetString(readingData, 0, numberOfBytesRead));
+            }
+            while (stream.DataAvailable);
+            responseData = completeMessage.ToString();
+            return responseData;
+        }
+        finally
+        {
+            stream.Close();
+            client.Close();
+        }
+	}
 }
