@@ -4,15 +4,19 @@ using System.Net.Sockets;
 
 public class InfoClient
 {
+    private string addres;
+    private int port;
     private TcpClient client;
 
-    public InfoClient(string address, int port)
+    public InfoClient(string addres, int port)
 	{
-        client = new TcpClient(address, port);
+        this.addres = addres;
+        this.port = port;
 	}
 
-    public string SendMessage(string message)
+    public string SendRequest(string message)
 	{
+        client = new TcpClient(addres, port);
         Byte[] data = Encoding.UTF8.GetBytes(message);
         NetworkStream stream = client.GetStream();
         try
@@ -29,8 +33,7 @@ public class InfoClient
                 completeMessage.AppendFormat("{0}", Encoding.UTF8.GetString(readingData, 0, numberOfBytesRead));
             }
             while (stream.DataAvailable);
-            responseData = completeMessage.ToString();
-            return responseData;
+            return completeMessage.ToString();
         }
         finally
         {
