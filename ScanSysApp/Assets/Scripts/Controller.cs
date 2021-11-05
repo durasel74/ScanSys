@@ -1,5 +1,7 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
@@ -19,12 +21,37 @@ public class Controller : MonoBehaviour
     void Update()
     {
         UpdateSystemInfo();
-		print(systemInfo.AudioInfo);
-	}
+        UpdateUI();
+    }
 
     private void UpdateSystemInfo()
 	{
-        responseJson = infoClient.SendRequest(requestCommand);
-        systemInfo = JsonUtility.FromJson<SystemInfo>(responseJson);
+		try
+		{
+            responseJson = infoClient.SendRequest(requestCommand);
+            systemInfo = JsonUtility.FromJson<SystemInfo>(responseJson);
+        }
+        catch { }
+    }
+
+    private void UpdateUI()
+	{
+        Text text;
+        if (!systemInfo.WeatherInfo.IsErrorConnection)
+		{
+            text = GameObject.Find("TemperatureValue").GetComponent<Text>();
+            text.text = ((int)systemInfo.WeatherInfo.TemperatureCelsius).ToString() + "℃";
+            text = GameObject.Find("HumidityValue").GetComponent<Text>();
+            text.text = systemInfo.WeatherInfo.Humidity.ToString() + "%";
+            text = GameObject.Find("PressureValue").GetComponent<Text>();
+            text.text = systemInfo.WeatherInfo.Pressure.ToString() + "mm";
+        }
+        if (!systemInfo.CPUInfo.IsError)
+        {
+            text = GameObject.Find("CPUValue").GetComponent<Text>();
+            text.text = systemInfo.CPUInfo.Temperature.ToString() + "℃";
+        }
+        text = GameObject.Find("AudioValue").GetComponent<Text>();
+        text.text = ((int)(systemInfo.AudioInfo)).ToString();
     }
 }
